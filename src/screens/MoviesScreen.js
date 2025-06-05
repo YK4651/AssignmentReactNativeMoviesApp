@@ -25,7 +25,6 @@ export default function MoviesScreen() {
     try {
       const response = await API.getMovies(type);
       setMovies(response.results || []);
-      // console.log('Fetched movies:', response.results);
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch movies');
       console.error(error);

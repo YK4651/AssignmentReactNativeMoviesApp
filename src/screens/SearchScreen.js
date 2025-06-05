@@ -113,7 +113,6 @@ const styles = StyleSheet.create({
   },
   searchTitle: {
     fontSize: 15,
-    // fontWeight: 'bold',
     marginTop: 10,
     paddingHorizontal: 16,
   },
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     backgroundColor: '#fff',
-    alignItems: 'center', // 中央寄せ
+    alignItems: 'center',
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
   },
