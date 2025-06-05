@@ -15,7 +15,6 @@ const TV_TYPES = [
 export default function TVScreen() {
   const [tvShows, setTvShows] = useState([]);
   const [selectedType, setSelectedType] = useState('airing_today');
-  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -23,15 +22,12 @@ export default function TVScreen() {
   }, [selectedType]);
 
   const fetchTVShows = async (type) => {
-    setLoading(true);
     try {
       const response = await API.getTV(type);
       setTvShows(response.results || []);
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch TV shows');
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,8 +59,6 @@ export default function TVScreen() {
         data={tvShows}
         renderItem={renderTVItem}
         keyExtractor={(item) => item.id.toString()}
-        refreshing={loading}
-        onRefresh={() => fetchTVShows(selectedType)}
         showsVerticalScrollIndicator={false}
       />
     </View>

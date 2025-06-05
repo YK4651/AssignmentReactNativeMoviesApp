@@ -23,17 +23,10 @@ export default function SearchScreen() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [selectedSearchType, setSelectedSearchType] = useState('movie');
-  const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const navigation = useNavigation();
 
   const handleSearch = async () => {
-    if (!searchQuery.trim()) {
-      Alert.alert('Error', 'Please enter a search term');
-      return;
-    }
-
-    setLoading(true);
     setHasSearched(true);
     try {
       const response = await API.search(selectedSearchType, searchQuery);
@@ -41,8 +34,6 @@ export default function SearchScreen() {
     } catch (error) {
       Alert.alert('Error', 'Failed to search');
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -68,17 +59,19 @@ export default function SearchScreen() {
   const renderEmptyState = () => (
     <View style={styles.emptyContainer}>
       <Text style={styles.emptyText}>
-        {hasSearched ? 'No results found' : 'Enter a search query to find movies and TV shows'}
+        {hasSearched ? 'No results found' : 'Please Initiate a search'}
       </Text>
     </View>
   );
 
   return (
     <View style={styles.container}>
+      <Text style={styles.searchTitle}>Search Movie/ TV Show Name*</Text>
       <View style={styles.searchContainer}>
+
         <TextInput
           style={styles.searchInput}
-          placeholder="Search for movies or TV shows..."
+          placeholder="i.e. James Bond"
           value={searchQuery}
           onChangeText={setSearchQuery}
           onSubmitEditing={handleSearch}
@@ -88,6 +81,7 @@ export default function SearchScreen() {
         </TouchableOpacity>
       </View>
       
+      <Text style={styles.searchTitle}>Choose Search Type*</Text>
       <Dropdown
         label="Search Type"
         style={styles.dropdownWrapper}
@@ -100,7 +94,6 @@ export default function SearchScreen() {
         data={searchResults}
         renderItem={renderSearchItem}
         keyExtractor={(item) => `${item.id}-${item.media_type || selectedSearchType}`}
-        refreshing={loading}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={renderEmptyState}
       />
@@ -117,6 +110,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     gap: 10,
+  },
+  searchTitle: {
+    fontSize: 15,
+    // fontWeight: 'bold',
+    marginTop: 10,
+    paddingHorizontal: 16,
   },
   searchInput: {
     flex: 1,
@@ -145,6 +144,7 @@ const styles = StyleSheet.create({
   },
   emptyText: {
     fontSize: 16,
+    fontWeight: 'bold',
     color: '#666',
     textAlign: 'center',
   },

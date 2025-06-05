@@ -14,7 +14,6 @@ import { API } from '../services/api';
 export default function DetailsScreen({ route }) {
   const { id, mediaType, title } = route.params;
   const [details, setDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchDetails();
@@ -32,19 +31,8 @@ export default function DetailsScreen({ route }) {
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch details');
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
-
-  if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#007bff" />
-        <Text>Loading details...</Text>
-      </View>
-    );
-  }
 
   if (!details) {
     return (
@@ -90,11 +78,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   errorContainer: {
     flex: 1,

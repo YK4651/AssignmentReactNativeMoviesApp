@@ -15,7 +15,6 @@ const MOVIE_TYPES = [
 export default function MoviesScreen() {
   const [movies, setMovies] = useState([]);
   const [selectedType, setSelectedType] = useState('now_playing');
-  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -23,7 +22,6 @@ export default function MoviesScreen() {
   }, [selectedType]);
 
   const fetchMovies = async (type) => {
-    setLoading(true);
     try {
       const response = await API.getMovies(type);
       setMovies(response.results || []);
@@ -31,8 +29,6 @@ export default function MoviesScreen() {
     } catch (error) {
       Alert.alert('Error', 'Failed to fetch movies');
       console.error(error);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -65,8 +61,6 @@ export default function MoviesScreen() {
         data={movies}
         renderItem={renderMovieItem}
         keyExtractor={(item) => item.id.toString()}
-        refreshing={loading}
-        onRefresh={() => fetchMovies(selectedType)}
         showsVerticalScrollIndicator={false}
       />
     </View>
